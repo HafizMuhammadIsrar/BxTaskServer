@@ -13,15 +13,28 @@ app.use(cors());
 
 const CONNECTION_URL = `mongodb+srv://misrark414:Vwe4mtiZGLSkJYc2@cluster0.ocf8e.mongodb.net/`;
 
-mongoose
-  .connect(CONNECTION_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Database connected successfully"))
-  .catch((error) =>
-    console.error("Error connecting to the database:", error.message)
-  );
+let isConnected;
+
+const connectToDatabase = async () => {
+  if (isConnected) return; // Return if already connected
+
+  try {
+    await mongoose.connect(CONNECTION_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = mongoose.connection.readyState; // Set connection state
+    console.log("Database connected successfully");
+  } catch (error) {
+    console.error("Error connecting to the database:", error.message);
+  }
+};
+
+// Middleware to ensure DB connection for each request
+app.use(async (req, res, next) => {
+  await connectToDatabase();
+  next();
+});
 
 app.use("/api/books", route);
 
