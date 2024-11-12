@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const route = require("../routes/booksRoute.js"); // Adjusted path
+const route = require("./routes/booksRoute"); // Adjusted path
 
 const app = express();
 
