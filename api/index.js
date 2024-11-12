@@ -14,7 +14,10 @@ app.use(cors());
 const CONNECTION_URL = `mongodb+srv://misrark414:Vwe4mtiZGLSkJYc2@cluster0.ocf8e.mongodb.net/`;
 
 mongoose
-  .connect(CONNECTION_URL)
+  .connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Database connected successfully"))
   .catch((error) =>
     console.error("Error connecting to the database:", error.message)
